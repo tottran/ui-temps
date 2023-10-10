@@ -39,7 +39,7 @@
       Paralax <br/>
       Hover Effect
     </h1>
-    <div class="layer front-layer border border-[red]
+    <div class="layer front-layer
     [&_img]:top-[15%]
     
     [&_img:nth-child(1)]:left-[0%]
@@ -57,7 +57,7 @@
       <img src="https://picsum.photos/id/231/200/200" alt="">
       <img src="https://picsum.photos/id/231/200/200" alt="">
     </div>
-    <div class="layer back-layer border border-[yellow]
+    <div class="layer back-layer
     [&_img]:bottom-[50%]
     [&_img:nth-child(1)]:left-[0%]
     [&_img:nth-child(2)]:left-[25%]
@@ -85,10 +85,23 @@
       const x = e.clientX;
       const y = e.clientY;
 
-      front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
+      // front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
       // front.style.webkitFilter = `blur(${y / sFront}px)`;
-      back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
+
+      const child1 = front.querySelectorAll('img');
+      // console.log(child1);
+      child1.forEach((item, i) => {
+        item.style.transform = `translate(${x / sFront / i}%, ${y / sFront / i + 1.2}%)`
+      });
+      
+      // back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
       // back.style.webkitFilter = `blur(${y / sBack}px)`;
+      
+      const child2 = back.querySelectorAll('img');
+      // console.log(child2);
+      child2.forEach((item, j) => {
+        item.style.transform = `translate(${x / sBack / j}%, ${y / sBack / j + 1.98}%)`;
+      });
     });
   </script>
 </body>
