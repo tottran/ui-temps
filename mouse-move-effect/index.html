@@ -1,3 +1,9 @@
+<!--
+  https://fakeimg.pl/350x200/ff0000/000
+  https://fakeimg.pl/350x200
+  https://picsum.photos/id/231/200/200
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,31 +12,84 @@
   <title>☃︎</title>
   <link rel="stylesheet" href="dist/assets/css/styles.css">
 </head>
-<body class="m-0">
-  <section class="parallax">
-    <h1>
+<body>
+  <section class="parallax
+  min-h-[100vh] bg-gradient-to-r from-[#333] to-[#999] text-white relative
+  [&_img]:border-4
+  
+  [&_.layer]:absolute
+  [&_.layer]:inset-[4rem]
+  [&_.layer]:pointer-events-none
+  
+  [&_.layer_img]:absolute
+  [&_.layer_img]:drop-shadow-lg 
+
+  [&_.front-layer]:z-[1]
+  [&_.back-layer]:z-[0]
+
+  [&_.front-layer_img]:w-[9rem]
+
+  [&_.back-layer_img]:w-[18rem]
+
+  ">
+    <h1 class="
+    text-[2rem] font-[900] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center uppercase
+    z-[10] drop-shadow-lg
+    ">
       Paralax <br/>
       Hover Effect
     </h1>
-    <div class="front-layer">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
+    <div class="layer front-layer border border-[red]
+    [&_img]:top-[15%]
+    
+    [&_img:nth-child(1)]:left-[0%]
+    [&_img:nth-child(1)]:top-[10%]
+    [&_img:nth-child(1)]:w-[18%]
+
+    [&_img:nth-child(2)]:left-[25%]
+    [&_img:nth-child(2)]:top-[5%]
+    [&_img:nth-child(3)]:top-[5%]
+    [&_img:nth-child(3)]:right-[25%]
+    [&_img:nth-child(4)]:right-[0%]
+    ">
       <img src="https://picsum.photos/id/231/200/200" alt="">
       <img src="https://picsum.photos/id/231/200/200" alt="">
       <img src="https://picsum.photos/id/231/200/200" alt="">
       <img src="https://picsum.photos/id/231/200/200" alt="">
     </div>
-    <div class="back-layer">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
+    <div class="layer back-layer border border-[yellow]
+    [&_img]:bottom-[50%]
+    [&_img:nth-child(1)]:left-[0%]
+    [&_img:nth-child(2)]:left-[25%]
+    [&_img:nth-child(2)]:bottom-[55%]
+    [&_img:nth-child(3)]:bottom-[45%]
+    [&_img:nth-child(3)]:right-[25%]
+    [&_img:nth-child(4)]:right-[0%]
+    ">
+      <img src="https://picsum.photos/id/231/400/400" alt="">
+      <img src="https://picsum.photos/id/231/400/400" alt="">
+      <img src="https://picsum.photos/id/231/400/400" alt="">
+      <img src="https://picsum.photos/id/231/400/400" alt="">
     </div>
   </section>
+
+  <script>
+    const parallax = document.querySelector('.parallax');
+    const front = document.querySelector('.front-layer');
+    const back = document.querySelector('.back-layer');
+
+    const sFront = 100;
+    const sBack = 50;
+
+    parallax.addEventListener('mousemove', e => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      front.style.transform = `translate(${x / sFront}%, ${y / sFront}%)`;
+      front.style.webkitFilter = `blur(${y / sFront}px)`;
+      back.style.transform = `translate(${x / sBack}%, ${y / sBack}%)`;
+      back.style.webkitFilter = `blur(${y / sBack}px)`;
+    });
+  </script>
 </body>
 </html>
-<!--
-  https://fakeimg.pl/350x200/ff0000/000
-  https://fakeimg.pl/350x200
-  https://picsum.photos/id/231/200/200
--->
