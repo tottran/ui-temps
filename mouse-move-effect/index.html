@@ -85,9 +85,9 @@
       const x = e.clientX;
       const y = e.clientY;
 
-      front.style.transform = `translate(${x / sFront}%, ${y / sFront}%)`;
+      front.style.transform = `translate(${x / sFront}%, ${y / sFront}%) skew(${x / sFront}deg, ${y / sFront}deg`;
       front.style.webkitFilter = `blur(${y / sFront}px)`;
-      back.style.transform = `translate(${x / sBack}%, ${y / sBack}%)`;
+      back.style.transform = `translate(${x / sBack}%, ${y / sBack}%) skew(${x / sBack}deg, ${y / sBack}deg)`;
       back.style.webkitFilter = `blur(${y / sBack}px)`;
     });
   </script>
