@@ -18,11 +18,11 @@ module.exports = {
       '3xl': '1598px',
       '4xl': '1920px',
     },
-    colors: {
-      black: 'black',
-      white: 'white',
-    },
     extend: {
+      colors: {
+        black: 'black',
+        white: 'white',
+      },
     },
     container: {
       center: true,
