@@ -85,10 +85,10 @@
       const x = e.clientX;
       const y = e.clientY;
 
-      front.style.transform = `translate(${x / sFront}%, ${y / sFront}%) skew(${x / sFront}deg, ${y / sFront}deg`;
-      front.style.webkitFilter = `blur(${y / sFront}px)`;
-      back.style.transform = `translate(${x / sBack}%, ${y / sBack}%) skew(${x / sBack}deg, ${y / sBack}deg)`;
-      back.style.webkitFilter = `blur(${y / sBack}px)`;
+      front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
+      // front.style.webkitFilter = `blur(${y / sFront}px)`;
+      back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
+      // back.style.webkitFilter = `blur(${y / sBack}px)`;
     });
   </script>
 </body>
