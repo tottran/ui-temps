@@ -74,7 +74,10 @@
     </div>
   </section>
 
+  <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
   <script>
+    const { fromEvent, throttleTime, tap, map } = rxjs;
+
     const parallax = document.querySelector('.parallax');
     const front = document.querySelector('.front-layer');
     const back = document.querySelector('.back-layer');
@@ -82,28 +85,43 @@
     const sFront = 100;
     const sBack = 50;
 
-    parallax.addEventListener('mousemove', e => {
-      const x = e.clientX;
-      const y = e.clientY;
+    fromEvent(parallax, 'mousemove')
+    .pipe(
+      throttleTime(20),
+      tap((e) => {
+        const x = e.clientX;
+        const y = e.clientY;
 
-      // front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
-      // front.style.webkitFilter = `blur(${y / sFront}px)`;
+        // front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
+        // front.style.webkitFilter = `blur(${y / sFront}px)`;
 
-      const child1 = front.querySelectorAll('img');
-      // console.log(child1);
-      child1.forEach((item, i) => {
-        item.style.transform = `translate(${x / sFront / i}%, ${y / sFront / i + 1.2}%)`
-      });
-      
-      // back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
-      // back.style.webkitFilter = `blur(${y / sBack}px)`;
-      
-      const child2 = back.querySelectorAll('img');
-      // console.log(child2);
-      child2.forEach((item, j) => {
-        item.style.transform = `translate(${x / sBack / j}%, ${y / sBack / j + 1.98}%)`;
-      });
-    });
+        const child1 = front.querySelectorAll('img');
+        // child1.forEach((item, i) => {
+        //   // item.style.transform = `translate(${x / sFront / i}%, ${y / sFront / i + 1.2}%)`
+        // });
+        child1[0].style.transform = `translate(${x / sFront - 4}%, ${y / sFront + 12 + 1.2}%)`;
+        child1[1].style.transform = `translate(${x / sFront - 3}%, ${y / sFront - 2 + 1.2}%)`;
+        child1[2].style.transform = `translate(${x / sFront - 2}%, ${y / sFront - 3 + 1.2}%)`;
+        child1[3].style.transform = `translate(${x / sFront - 1}%, ${y / sFront - 4 + 1.2}%)`;
+        
+        // back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
+        // back.style.webkitFilter = `blur(${y / sBack}px)`;
+        
+        const child2 = back.querySelectorAll('img');
+        // child2.forEach((item, j) => {
+        //   item.style.transform = `translate(${x / sBack / j}%, ${y / sBack / j + 1.98}%)`;
+        // });
+        child2[0].style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 1 + 1.98}%)`;
+        child2[1].style.transform = `translate(${x / sBack / 3}%, ${y / sBack / 2 + 1.98}%)`;
+        child2[2].style.transform = `translate(${x / sBack / 2}%, ${y / sBack / 3 + 1.98}%)`;
+        child2[3].style.transform = `translate(${x / sBack / 1}%, ${y / sBack / 4 + 1.98}%)`;
+      })
+    )
+    .subscribe();
+
+    // parallax.addEventListener('mousemove', e => {
+    // });
+    
   </script>
 </body>
 </html>
