@@ -1,0 +1,15 @@
+{
+  "name": "mouse-move-effect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "styles": "npx tailwindcss -i styles.css -o dist/assets/css/styles.css --watch --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
