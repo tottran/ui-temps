@@ -14,13 +14,14 @@
   <link rel="stylesheet" href="dist/assets/css/styles.css">
 </head>
 <body>
+  <!-- [&_.layer]:pointer-events-none -->
   <section class="parallax
   min-h-[100vh] bg-gradient-to-r from-[#333] to-[#999] text-white relative
   [&_img]:border-4
   
   [&_.layer]:absolute
   [&_.layer]:inset-[4rem]
-  [&_.layer]:pointer-events-none
+  
   
   [&_.layer_img]:absolute
   [&_.layer_img]:drop-shadow-lg 
@@ -32,6 +33,7 @@
 
   [&_.back-layer_img]:w-[18rem]
 
+  [&_.layer_img]:transition-all
   ">
     <h1 class="
     text-[2rem] font-[900] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center uppercase
@@ -40,7 +42,8 @@
       Paralax <br/>
       Hover Effect
     </h1>
-    <div class="layer front-layer
+
+    <div ondrop="handleDrop" ondragover="allowDrop(event)" class="layer front-layer
     [&_img]:top-[15%]
     
     [&_img:nth-child(1)]:left-[0%]
@@ -53,12 +56,12 @@
     [&_img:nth-child(3)]:right-[25%]
     [&_img:nth-child(4)]:right-[0%]
     ">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
-      <img src="https://picsum.photos/id/231/200/200" alt="">
+      <img src="https://picsum.photos/id/231/200/200" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/200/200" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/200/200" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/200/200" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
     </div>
-    <div class="layer back-layer
+    <div ondrop="handleDrop" ondragover="allowDrop(event)" class="layer back-layer
     [&_img]:bottom-[50%]
     [&_img:nth-child(1)]:left-[0%]
     [&_img:nth-child(2)]:left-[25%]
@@ -67,61 +70,127 @@
     [&_img:nth-child(3)]:right-[25%]
     [&_img:nth-child(4)]:right-[0%]
     ">
-      <img src="https://picsum.photos/id/231/400/400" alt="">
-      <img src="https://picsum.photos/id/231/400/400" alt="">
-      <img src="https://picsum.photos/id/231/400/400" alt="">
-      <img src="https://picsum.photos/id/231/400/400" alt="">
+      <img src="https://picsum.photos/id/231/400/400" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/400/400" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/400/400" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
+      <img src="https://picsum.photos/id/231/400/400" alt="" draggable="true" ondragstart="drag(event)" ondrag="handleDrop">
     </div>
   </section>
 
+  <section class="fixed left-0 bottom-0 w-full p-4 bg-[white] z-[1000]">
+    <div>
+      <label for="front-z">front-z</label><input type="number" id="front-z" name="front-z" onchange="handleChange" />
+    </div>
+    <div>
+      <label for="back-z">back-z</label><input type="number" id="back-z" name="back-z" onchange="handleChange" />
+    </div>
+  </section>
+
+  <span id="mymouse" class="fixed w-8 h-8 rounded-full bg-[red] z-[999] top-[10px] left-[10px] shadown-2xl transition delay-[.15s] duration-[.35s]">
+  </span>
+
   <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
+  <!-- hover -->
   <script>
-    const { fromEvent, throttleTime, tap, map } = rxjs;
+    const { fromEvent, auditTime, tap, map } = rxjs;
 
     const parallax = document.querySelector('.parallax');
     const front = document.querySelector('.front-layer');
     const back = document.querySelector('.back-layer');
 
+    if(typeof window !== "undefined") {
+      fromEvent(window, 'mousemove')
+      .pipe(
+        auditTime(50),
+        tap((e) => {
+          const p = document.getElementById('mymouse');
+          p.style.left = `${e.clientX}px`;
+          p.style.top = `${e.clientY}px`;
+        })
+      ).subscribe();
+    }
+
     const sFront = 100;
     const sBack = 50;
 
-    fromEvent(parallax, 'mousemove')
-    .pipe(
-      throttleTime(20),
-      tap((e) => {
-        const x = e.clientX;
-        const y = e.clientY;
+    if(typeof parallax !== "undefined" && front && back) {
+      fromEvent(parallax, 'mousemove')
+      .pipe(
+        auditTime(20),
+        tap((e) => {
+          const x = e.clientX;
+          const y = e.clientY;
+  
+          // front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
+          // front.style.webkitFilter = `blur(${y / sFront}px)`;
+  
+          const child1 = front.querySelectorAll('img');
+          // child1.forEach((item, i) => {
+          //   // item.style.transform = `translate(${x / sFront / i}%, ${y / sFront / i + 1.2}%)`
+          // });
+          child1[0].style.transform = `translate(${x / sFront - 4}%, ${y / sFront + 12 + 1.2}%)`;
+          child1[1].style.transform = `translate(${x / sFront - 3}%, ${y / sFront - 2 + 1.2}%)`;
+          child1[2].style.transform = `translate(${x / sFront - 2}%, ${y / sFront - 3 + 1.2}%)`;
+          child1[3].style.transform = `translate(${x / sFront - 1}%, ${y / sFront - 4 + 1.2}%)`;
+          
+          // back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
+          // back.style.webkitFilter = `blur(${y / sBack}px)`;
+          
+          const child2 = back.querySelectorAll('img');
+          // child2.forEach((item, j) => {
+          //   item.style.transform = `translate(${x / sBack / j}%, ${y / sBack / j + 1.98}%)`;
+          // });
+          child2[0].style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 1 + 1.98}%)`;
+          child2[1].style.transform = `translate(${x / sBack / 3}%, ${y / sBack / 2 + 1.98}%)`;
+          child2[2].style.transform = `translate(${x / sBack / 2}%, ${y / sBack / 3 + 1.98}%)`;
+          child2[3].style.transform = `translate(${x / sBack / 1}%, ${y / sBack / 4 + 1.98}%)`;
+        })
+      )
+      .subscribe();
+  
+      // parallax.addEventListener('mousemove', e => {
+      // });
+    }
 
-        // front.style.transform = `translate(${x / sFront / 2}%, ${y / sFront / 3}%)`;
-        // front.style.webkitFilter = `blur(${y / sFront}px)`;
-
-        const child1 = front.querySelectorAll('img');
-        // child1.forEach((item, i) => {
-        //   // item.style.transform = `translate(${x / sFront / i}%, ${y / sFront / i + 1.2}%)`
-        // });
-        child1[0].style.transform = `translate(${x / sFront - 4}%, ${y / sFront + 12 + 1.2}%)`;
-        child1[1].style.transform = `translate(${x / sFront - 3}%, ${y / sFront - 2 + 1.2}%)`;
-        child1[2].style.transform = `translate(${x / sFront - 2}%, ${y / sFront - 3 + 1.2}%)`;
-        child1[3].style.transform = `translate(${x / sFront - 1}%, ${y / sFront - 4 + 1.2}%)`;
-        
-        // back.style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 7}%)`;
-        // back.style.webkitFilter = `blur(${y / sBack}px)`;
-        
-        const child2 = back.querySelectorAll('img');
-        // child2.forEach((item, j) => {
-        //   item.style.transform = `translate(${x / sBack / j}%, ${y / sBack / j + 1.98}%)`;
-        // });
-        child2[0].style.transform = `translate(${x / sBack / 4}%, ${y / sBack / 1 + 1.98}%)`;
-        child2[1].style.transform = `translate(${x / sBack / 3}%, ${y / sBack / 2 + 1.98}%)`;
-        child2[2].style.transform = `translate(${x / sBack / 2}%, ${y / sBack / 3 + 1.98}%)`;
-        child2[3].style.transform = `translate(${x / sBack / 1}%, ${y / sBack / 4 + 1.98}%)`;
-      })
-    )
-    .subscribe();
-
-    // parallax.addEventListener('mousemove', e => {
-    // });
     
+
+
+    const parent = document.querySelector('.layer');
+    const child = document.querySelector('.layer img');
+
+    // drag
+    const handleChange = (e) => {
+      // const target = e.target;
+      // const name = target.name;
+      // const value = target.value;
+      // console.log({name, value});
+    }
+    
+    // parent
+    const handleDrop = (e) => {
+      // const target = e.target;
+      // const name = target.name;
+      // const value = target.value;
+      // console.log({name, value});
+    }
+    const allowDrop = (e) => {
+      e.preventDefault();
+      // const target = e.target;
+      // console.log(target);
+    }
+    
+    // child
+    const drag = (e) => {
+      console.log(e);
+      const ele = e.target;
+      console.log(ele);
+      // ele.style.left = `${e.clientX - ele.width}px`;
+      // ele.style.top = `${e.clientY - ele.height}px`;
+      // const target = e2.target;
+      // const name = target.name;
+      // const value = target.value;
+      // console.log({name, value});
+    }
   </script>
 </body>
 </html>

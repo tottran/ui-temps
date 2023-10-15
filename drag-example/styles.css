@@ -1,0 +1,7 @@
+@tailwind base;
+@layer base{
+  .border-highlight {
+    @apply border border-[2px] border-dotted border-[lightgreen];
+  }
+}
+@tailwind components;@tailwind utilities

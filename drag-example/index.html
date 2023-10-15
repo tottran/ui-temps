@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag&Drop</title>
+  <style>
+    .draggable {
+      position: absolute;
+      border: 2px solid green; 
+      cursor:pointer;
+      width:100px;height:50px;
+    }
+    .dropzone {
+      position: relative;
+      left:200px;
+      border:2px solid red; 
+      cursor:pointer;
+      width:200px;height:200px;
+    }
+    .dropzone.dragover {
+      background-color: purple;
+    }
+  </style>
+
+  <link rel="stylesheet" href="dist/assets/css/styles.css">
+
+  <style>
+    body {
+      /* Prevent the user selecting text in the example */
+      user-select: none;
+    }
+
+    #draggable {
+      text-align: center;
+      background: white;
+    }
+
+    #container {
+      width: 200px;
+      height: 20px;
+      background: blueviolet;
+      padding: 10px;
+
+      transition: all ease .45s;
+    }
+
+    .dragging {
+      opacity: 0.01;
+    }
+  </style>
+</head>
+
+<body class="border p-8">
+  <div
+    id="draggable"
+    draggable="true"
+    ondragstart="onDragStart(event)"
+    ondragend="onDragEnd(event)"
+    ondrag="onDragging(event)"
+    class="draggable"
+  >Dragged Div</div>
+
+  <div
+    id="dropzone"
+    ondrop="dropHandler(event)"
+    ondragover="dragOverHandler(event)"
+    ondragleave="dragLeaveHandler(event)"
+    ondragenter="dragEnterHandler(event)"
+    class="dropzone"
+  >Drop Div
+  </div>
+
+  <script>
+    let offsetX = 0;
+    let offsetY = 0;
+    const draggable = document.getElementById('draggable');
+    const dropzone = document.getElementById('dropzone');
+
+    document.addEventListener("dragover", function(event) {
+
+      // prevent default to allow drop
+      event.preventDefault();
+
+    }, false);
+
+    const onDragStart = (ev) => {
+      // ev.preventDefault();
+      const target = ev.target;
+      
+      target.classList.add('dragging');
+      // const rect = target.getBoundingClientRect();
+      
+      // offsetX = ev.clientX - rect.x;
+      // offsetY = ev.clientY - rect.y;
+      console.log('start',{offsetX,offsetY});
+    }
+    
+    const onDragging = (ev) => {
+      // ev.preventDefault();
+      const target = ev.target;
+
+      // let lastx = draggable.offsetLeft;
+      // let lasty = draggable.offsetTop;
+      
+      target.classList.add('dragging');
+      // const rect = target.getBoundingClientRect();
+      
+      // offsetX = ev.clientX - rect.x;
+      // offsetY = ev.clientY - rect.y;
+      // console.log('moving',{offsetX,offsetY});
+      
+      // offsetX = ev.clientX;
+      // offsetY = ev.clientY;
+      if(target) {
+        console.log('moving',{
+          target: target,
+          offsetLeft: target.offsetLeft,
+          offsetTop: target.offsetTop,
+          clientLeft: target.clientLeft,
+          clientTop: target.clientTop,
+          offsetX: target.offsetX,
+          offsetY: target.offsetY,
+        });
+        // offsetX = target.offsetLeft;
+        // offsetY = target.offsetTop;
+        // console.log('moving',{offsetX,offsetY});
+      }
+
+      if(typeof draggable !== 'undefined') {
+        // console.log({
+        //   draggable,
+        //   target,
+        // });
+        draggable.style.left = ev.clientX + 'px';
+        draggable.style.top = ev.clientX + 'px';
+      }
+    }
+
+    const onDragEnd = (ev) => {
+      ev.preventDefault();
+      const target = ev.target;
+      target.classList.remove('dragging');
+      // const rect = target.getBoundingClientRect();
+
+      // offsetX = ev.clientX - rect.x;
+      // offsetY = ev.clientY - rect.y;
+      console.log('end',{offsetX,offsetY});
+    }
+
+    
+
+    const dropHandler = (ev) => {
+      ev.preventDefault();
+      
+      if(draggable && dropzone) {
+        const left = parseInt(dropzone.style.left);
+        const top = parseInt(dropzone.style.top);
+        
+        draggable.style.left = ev.clientX - left - offsetX + 'px';
+        draggable.style.top = ev.clientX - top - offsetY + 'px';
+        dropzone.appendChild(document.getElementById('draggable'));
+      }
+    }
+    
+    const dragOverHandler = function(ev) {
+      ev.preventDefault();
+      if (ev.target.classList.contains("dropzone")) {
+        ev.target.classList.add('border-highlight');
+        ev.dataTransfer.dropEffect = "move";
+      }
+    };
+
+    const dragLeaveHandler = function(ev) {
+      ev.preventDefault();
+      if (ev.target.classList.contains("dropzone")) {
+        ev.target.classList.remove('border-highlight');
+        
+        // small case:
+        if (ev.target.classList.contains("dragover")) {
+          event.target.classList.remove("dragover");
+        }
+      }
+      ev.dataTransfer.dropEffect = "move";
+    };
+    
+    const dragEnterHandler = function(ev) {
+      ev.preventDefault();
+      console.log(ev.target);
+      if (ev.target.classList.contains("dropzone")) {
+        event.target.classList.add("dragover");
+      }
+    };
+  </script>
+</body>
+</html>
